@@ -11,12 +11,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3 # Updated to v3
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v3 # Updated to v3
         with:
-          node-version: "16"
+          node-version: "16" # Ensure using Node.js 16
 
       - name: Install dependencies
         run: npm install
@@ -25,6 +25,12 @@ jobs:
         env:
           VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
         run: npm run build
+
+      - name: Debug git config
+        run: |
+          git config --list
+          git remote -v
+          git branch -a
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
