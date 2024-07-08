@@ -215,9 +215,6 @@ function App() {
             <button type="button" onClick={calculatePayments}>
               Calculate
             </button>
-            <div>
-              <p>Monthly Payment: ${monthlyPayment}</p>
-            </div>
           </form>
         </div>
         {calculated && (
@@ -230,6 +227,9 @@ function App() {
       </div>
       {calculated && (
         <div id="smart-insights-section">
+          <div>
+            <p>Monthly Payment: ${monthlyPayment}</p>
+          </div>
           <h3 className="smart-insights-content">Smart Insights:</h3>
           <ul className="smart-insights-content">
             <li>{textInsights}</li>
