@@ -12,20 +12,20 @@ import {
 } from "./MortgageCalculations";
 
 function App() {
-  const [homeValue, setHomeValue] = useState(258000);
-  const [downPayment, setDownPayment] = useState(25800);
-  const [interestRate, setInterestRate] = useState(6.5);
-  const [loanTerm, setLoanTerm] = useState(30);
-  const [propertyTax, setPropertyTax] = useState(2000);
-  const [monthlyHOA, setMonthlyHOA] = useState(75);
+  const [homeValue, setHomeValue] = useState(0);
+  const [downPayment, setDownPayment] = useState(0);
+  const [interestRate, setInterestRate] = useState(0);
+  const [loanTerm, setLoanTerm] = useState(0);
+  const [propertyTax, setPropertyTax] = useState(0);
+  const [monthlyHOA, setMonthlyHOA] = useState(0);
   const [paymentSchedule, setPaymentSchedule] = useState([]);
   const [firstPaymentScheduledDate, setfirstPaymentScheduledDate] =
-    useState("2024-08-19");
+    useState("");
   const [lastPaymentScheduledDate, setlastPaymentScheduledDate] = useState("");
   const [monthlyPayment, setMonthlyPayment] = useState(0);
   const [prompt, setPrompt] = useState("");
   const [calculated, setCalculated] = useState(false);
-  const [extraMonthlyPayment, setExtraMonthlyPayment] = useState();
+  const [extraMonthlyPayment, setExtraMonthlyPayment] = useState(0);
 
   const [paymentScheduleExtraPayments, setPaymentScheduleExtraPayments] =
     useState([]);
@@ -237,9 +237,9 @@ function App() {
         </div>
       )}
 
-      <div className="ai-response">
+      {/* <div className="ai-response">
         <GeminiComponent initialPrompt={prompt} />
-      </div>
+      </div> */}
     </div>
   );
 }
