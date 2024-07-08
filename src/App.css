@@ -109,3 +109,13 @@ button:hover {
 #smart-insights-section {
   padding-top: -30px;
 }
+
+input[readonly] {
+  background-color: #f0f0f0; /* Light gray background */
+  color: #888; /* Darker gray text */
+  border-color: #ccc; /* Light gray border */
+  cursor: not-allowed; /* Change cursor to indicate it's not editable */
+}
+
+h2 {
+}

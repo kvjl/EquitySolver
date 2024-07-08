@@ -210,6 +210,7 @@ function App() {
               type="date"
               value={lastPaymentScheduledDate}
               onChange={handlelastPaymentScheduledDatechange}
+              readOnly
             />
 
             <button type="button" onClick={calculatePayments}>
@@ -217,18 +218,17 @@ function App() {
             </button>
           </form>
         </div>
-        {calculated && (
-          <InterestVsPrincipalChart
-            calculated={calculated}
-            paymentSchedule={paymentSchedule}
-            paymentScheduleExtraPayments={paymentScheduleExtraPayments}
-          />
-        )}
+
+        <InterestVsPrincipalChart
+          calculated={calculated}
+          paymentSchedule={paymentSchedule}
+          paymentScheduleExtraPayments={paymentScheduleExtraPayments}
+        />
       </div>
       {calculated && (
         <div id="smart-insights-section">
           <div>
-            <h3>Monthly Payment: ${monthlyPayment}</h3>
+            <h2>Monthly Payment: ${monthlyPayment}</h2>
           </div>
           <h3 className="smart-insights-content">Smart Insights:</h3>
           <ul className="smart-insights-content">
