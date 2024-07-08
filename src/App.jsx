@@ -12,20 +12,20 @@ import {
 } from "./MortgageCalculations";
 
 function App() {
-  const [homeValue, setHomeValue] = useState(0);
-  const [downPayment, setDownPayment] = useState(0);
-  const [interestRate, setInterestRate] = useState(0);
-  const [loanTerm, setLoanTerm] = useState(0);
-  const [propertyTax, setPropertyTax] = useState(0);
-  const [monthlyHOA, setMonthlyHOA] = useState(0);
+  const [homeValue, setHomeValue] = useState("");
+  const [downPayment, setDownPayment] = useState("");
+  const [interestRate, setInterestRate] = useState("");
+  const [loanTerm, setLoanTerm] = useState("");
+  const [propertyTax, setPropertyTax] = useState("");
+  const [monthlyHOA, setMonthlyHOA] = useState("");
   const [paymentSchedule, setPaymentSchedule] = useState([]);
   const [firstPaymentScheduledDate, setfirstPaymentScheduledDate] =
     useState("");
   const [lastPaymentScheduledDate, setlastPaymentScheduledDate] = useState("");
-  const [monthlyPayment, setMonthlyPayment] = useState(0);
+  const [monthlyPayment, setMonthlyPayment] = useState("");
   const [prompt, setPrompt] = useState("");
   const [calculated, setCalculated] = useState(false);
-  const [extraMonthlyPayment, setExtraMonthlyPayment] = useState(0);
+  const [extraMonthlyPayment, setExtraMonthlyPayment] = useState("");
 
   const [paymentScheduleExtraPayments, setPaymentScheduleExtraPayments] =
     useState([]);
@@ -228,7 +228,7 @@ function App() {
       {calculated && (
         <div id="smart-insights-section">
           <div>
-            <p>Monthly Payment: ${monthlyPayment}</p>
+            <h3>Monthly Payment: ${monthlyPayment}</h3>
           </div>
           <h3 className="smart-insights-content">Smart Insights:</h3>
           <ul className="smart-insights-content">
