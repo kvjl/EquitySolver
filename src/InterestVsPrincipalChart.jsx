@@ -14,86 +14,110 @@ import {
   PieChart,
   Pie,
   Cell,
+  BarChart,
+  Bar,
 } from "recharts";
+import { generateExtraPaymentSchedule } from "./MortgageCalculations";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    const sortedPayload = [...payload].sort((a, b) => {
+      if (a.dataKey === "cumulativePrincipal") return 1;
+      if (b.dataKey === "cumulativePrincipal") return -1;
+      return 0;
+    });
 
-function InterestVsPrincipalChart({ calculated, paymentSchedule }) {
+    const tooltipStyles = {
+      backgroundColor: "#ffffff",
+      border: "1px solid #cccccc",
+      padding: "10px",
+      borderRadius: "5px",
+    };
+
+    return (
+      <div className="custom-tooltip" style={tooltipStyles}>
+        <p className="label">{`${label}`}</p>
+        {sortedPayload.map((entry, index) => (
+          <p key={`item-${index}`} style={{ color: entry.color }}>
+            {`${entry.name} : ${entry.value}`}
+          </p>
+        ))}
+      </div>
+    );
+  }
+
+  return null;
+};
+function InterestVsPrincipalChart({
+  calculated,
+  paymentSchedule,
+  paymentScheduleExtraPayments,
+}) {
   return (
     <div>
-      {calculated && (
-        <div className="chart-grid">
-          <div className="chart-item">
-            <h3>Area Graph for Interest vs Principal Over the Years</h3>
-            <ResponsiveContainer width="100%" height={400}>
-              <AreaChart
-                data={paymentSchedule}
-                margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
-              >
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <ReferenceLine x="Year 1" stroke="green" label="Start" />
-                <Area
-                  type="monotone"
-                  dataKey="cumulativePrincipal"
-                  name="Cumulative Principal"
-                  stackId="1"
-                  stroke="#8884d8"
-                  fill="#8884d8"
-                />
-                <Area
-                  type="monotone"
-                  dataKey="cumulativePrincipalExtraPayments"
-                  name="Extra Payments"
-                  stackId="1"
-                  stroke="#FF8042"
-                  fill="#FF8042"
-                />
-                <Area
-                  type="monotone"
-                  dataKey="cumulativeInterest"
-                  name="Cumulative Interest"
-                  stackId="1"
-                  stroke="#82ca9d"
-                  fill="#82ca9d"
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
+      <div className="chart-grid">
+        <div className="chart-item">
+          <ResponsiveContainer width="100%" height={400}>
+            <AreaChart data={paymentSchedule}>
+              <XAxis dataKey="fiveYearIncrement" />
+              <YAxis />
+              <Tooltip content={<CustomTooltip />} />
+              <Legend />
+              <ReferenceLine x="Year 1" stroke="green" label="Start" />
+              <Area
+                type="monotone"
+                dataKey="cumulativePrincipal"
+                name="Cumulative Principal"
+                stackId="1"
+                stroke="#8884d8"
+                fill="#8884d8"
+              />
+
+              <Area
+                type="monotone"
+                dataKey="cumulativeInterest"
+                name="Cumulative Interest"
+                stackId="1"
+                stroke="#82ca9d"
+                fill="#82ca9d"
+              />
+            </AreaChart>
+          </ResponsiveContainer>
         </div>
-      )}
+
+        <div className="chart-item">
+          <ResponsiveContainer width="100%" height={400}>
+            <AreaChart data={paymentScheduleExtraPayments}>
+              <XAxis dataKey="fiveYearIncrement" />
+              <YAxis />
+              <Tooltip content={<CustomTooltip />} />
+              <Legend />
+              <ReferenceLine x="Year 1" stroke="green" label="Start" />
+              <Area
+                type="monotone"
+                i
+                dataKey="cumulativePrincipalExtra"
+                name="Cumulative Principal Extra Payments"
+                stackId="1"
+                stroke="#FF8042"
+                fill="#FF8042"
+              />
+
+              <Area
+                type="monotone"
+                dataKey="cumulativeInterestExtra"
+                name="Cumulative Interest Extra"
+                stackId="1"
+                stroke="#82ca9d"
+                fill="#82ca9d"
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
     </div>
   );
-}
-
-{
-  /* <div className="chart-item">
-            <h3>Pie Chart of Interest Distribution</h3>
-            <ResponsiveContainer width="100%" height={400}>
-              <PieChart>
-                <Pie
-                  data={paymentSchedule}
-                  dataKey="interest"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={80}
-                  outerRadius={120}
-                  fill="#82ca9d"
-                >
-                  {paymentSchedule.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          </div> */
 }
 
 // InterestVsPrincipalChart.propTypes = {

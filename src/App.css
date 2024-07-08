@@ -23,11 +23,13 @@ p {
 
 .flex-container {
   display: flex;
-  justify-content: space-between;
+
+  align-items: flex-start; /* Align items at the top */
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  gap: 0px; /* Add some space between the form and the chart grid */
 }
 
 .left-side {
-  flex: 1;
 }
 
 form {
@@ -38,9 +40,9 @@ form {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 300px;
+  width: 100%;
   margin-bottom: 3%;
-  margin-right: 30px;
+  margin-right: 20px;
 }
 
 .home-finder-form {
@@ -78,14 +80,19 @@ button:hover {
 }
 
 .chart-grid {
+  margin-left: 40px;
+  flex: 1;
+  margin-right: 50px 0; /* Center the grid */
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 20px;
+  max-width: 1200px; /* Limit the width of the grid */
   width: 100%;
 }
 
 .chart-item {
   width: 100%;
+  padding: 30px; /* Optional: Add padding for better alignment */
 }
 
 .ai-response {
@@ -93,4 +100,12 @@ button:hover {
 
 .gemini-component {
   text-align: center;
+}
+
+.smart-insights-content {
+  color: #900c3f;
+}
+
+#smart-insights-section {
+  padding-top: -30px;
 }

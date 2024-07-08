@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
-// import HomeFinder from "./HomeFinder";
 import GeminiComponent from "./GeminiComponent";
+// import HomeFinder from "./HomeFinder";
 import InterestVsPrincipalChart from "./InterestVsPrincipalChart";
 import {
   calculateMonthlyPayment,
   generatePaymentSchedule,
   calculateLastPaymentDate,
+  generateExtraPaymentSchedule,
+  calculateTotalInterest,
 } from "./MortgageCalculations";
 
 function App() {
@@ -23,8 +25,12 @@ function App() {
   const [monthlyPayment, setMonthlyPayment] = useState(0);
   const [prompt, setPrompt] = useState("");
   const [calculated, setCalculated] = useState(false);
+  const [extraMonthlyPayment, setExtraMonthlyPayment] = useState();
 
-  const [extraMonthlyPayment, setextraMonthlyPayment] = useState(200);
+  const [paymentScheduleExtraPayments, setPaymentScheduleExtraPayments] =
+    useState([]);
+
+  const [textInsights, setTextInsights] = useState("");
 
   const handleHomeValueChange = (e) => {
     setHomeValue(e.target.value);
@@ -65,7 +71,7 @@ function App() {
   };
 
   const handleExtraMonthlyPayment = (e) => {
-    setextraMonthlyPayment(e.target.value);
+    setExtraMonthlyPayment(parseFloat(e.target.value) || 0);
   };
 
   const calculatePayments = () => {
@@ -80,9 +86,21 @@ function App() {
     const monthlyTaxes = propertyTax / 12;
     const monthlyTotalPayment =
       monthlyPrincipalInterest + monthlyTaxes + parseFloat(monthlyHOA);
+
     setMonthlyPayment(monthlyTotalPayment.toFixed(2));
 
-    const schedule = generatePaymentSchedule(
+    console.log("Extra Monthly Payment:", extraMonthlyPayment);
+    console.log("First Payment Scheduled Date:", firstPaymentScheduledDate);
+
+    const scheduleTraditional = generatePaymentSchedule(
+      principal,
+      interestRate,
+      monthlyPrincipalInterest,
+      numberOfPayments,
+      firstPaymentScheduledDate
+    );
+
+    const scheduleExtraPayment = generateExtraPaymentSchedule(
       principal,
       interestRate,
       monthlyPrincipalInterest,
@@ -90,7 +108,10 @@ function App() {
       firstPaymentScheduledDate,
       extraMonthlyPayment
     );
-    setPaymentSchedule(schedule);
+
+    setPaymentSchedule(scheduleTraditional);
+    setPaymentScheduleExtraPayments(scheduleExtraPayment);
+
     setCalculated(true);
 
     const newPrompt = `The Home value is ${homeValue}, the HOA is ${monthlyHOA}, the down payment is ${downPayment}`;
@@ -102,12 +123,24 @@ function App() {
     );
     setlastPaymentScheduledDate(lastPaymentDate);
 
-    console.log(schedule);
+    const totalInterestTraditional =
+      calculateTotalInterest(scheduleTraditional);
+
+    const totalInterestExtra = calculateTotalInterest(scheduleExtraPayment);
+    const savings = totalInterestTraditional - totalInterestExtra;
+
+    setTextInsights(
+      `If you add an additional $${extraMonthlyPayment.toLocaleString()}, you can save a total of $${savings.toLocaleString()} in interest`
+    );
+
+    console.log(scheduleTraditional);
+    console.log(scheduleExtraPayment);
   };
 
   return (
     <div className="App">
       <h1>Equity Solver</h1>
+      {/* <HomeFinder /> */}
       <div className="flex-container">
         <div className="left-side">
           <form className="container">
@@ -163,7 +196,7 @@ function App() {
               type="number"
               value={extraMonthlyPayment}
               onChange={handleExtraMonthlyPayment}
-              placeholder="Enter Monthly Extra payments on top of your mortgage"
+              placeholder="Enter the additional payments."
             />
 
             <label>Date of First Payment:</label>
@@ -191,9 +224,19 @@ function App() {
           <InterestVsPrincipalChart
             calculated={calculated}
             paymentSchedule={paymentSchedule}
+            paymentScheduleExtraPayments={paymentScheduleExtraPayments}
           />
         )}
       </div>
+      {calculated && (
+        <div id="smart-insights-section">
+          <h3 className="smart-insights-content">Smart Insights:</h3>
+          <ul className="smart-insights-content">
+            <li>{textInsights}</li>
+          </ul>
+        </div>
+      )}
+
       <div className="ai-response">
         <GeminiComponent initialPrompt={prompt} />
       </div>

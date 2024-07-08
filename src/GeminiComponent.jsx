@@ -18,9 +18,17 @@ const GeminiComponent = ({ initialPrompt }) => {
     const genAI = new GoogleGenerativeAI(apiKey);
 
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-      const result = await model.generateContent(newPrompt);
-      const text = await result.response.text();
+      const model = await genAI.getGenerativeModel({
+        model: "gemini-1.5-flash",
+      });
+
+      // Ensure the input is correctly formatted as an object
+      const request = {
+        prompt: newPrompt,
+      };
+
+      const result = await model.generateContent([request]); // Pass as an array
+      const text = result.responses[0]?.text || "No response text available.";
       setResponse(text.trim());
     } catch (error) {
       if (error.message.includes("429") && retryCount < 3) {
