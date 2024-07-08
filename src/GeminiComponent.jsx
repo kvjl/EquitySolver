@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+// import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const GeminiComponent = ({ initialPrompt }) => {
   const [prompt, setPrompt] = useState(initialPrompt);
