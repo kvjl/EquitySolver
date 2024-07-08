@@ -25,9 +25,8 @@ p {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: flex-start; /* Align items at the top */
-  flex-wrap: wrap; /* Allow wrapping on smaller screens */
-  gap: 20px;
+  align-items: flex-start;
+  flex-wrap: wrap;
 }
 
 .left-side {
@@ -82,11 +81,11 @@ button:hover {
 }
 
 .chart-grid {
-  margin-left: 10px; /* Add space to the left of the chart grid */
-  flex: 1; /* Make the chart grid take up equal space */
+  margin-left: 10px;
+  flex: 1;
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Two columns for charts */
-  gap: 10px; /* Space between charts */
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
   max-width: 1000px;
   width: 100%;
 }
@@ -111,11 +110,27 @@ button:hover {
   padding-top: -30px;
 }
 input[readonly] {
-  background-color: #f0f0f0; /* Light gray background */
-  color: #888; /* Darker gray text */
-  border-color: #ccc; /* Light gray border */
-  cursor: not-allowed; /* Change cursor to indicate it's not editable */
+  background-color: #f0f0f0;
+  color: #888;
+  border-color: #ccc;
+  cursor: not-allowed;
 }
 
 h2 {
+}
+
+@media (max-width: 768px) {
+  .flex-container {
+    flex-direction: column;
+  }
+
+  .left-side,
+  .chart-grid {
+    margin: 0;
+  }
+
+  .chart-grid {
+    display: flex;
+    flex-direction: column;
+  }
 }
